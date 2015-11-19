@@ -86,11 +86,11 @@ namespace XlcmAuto
         {
             if (gameStage == -1)
             {
-                SendKeys.Send("F12");
+                SendKeys.SendWait("F12");
             }
             else if (gameStage == 2)
             {
-                SendKeys.Send(againKey);
+                SendKeys.SendWait(againKey);
             }
         }
 
@@ -123,7 +123,7 @@ namespace XlcmAuto
         {
             while (gameStage == 1)
             {
-                SendKeys.Send(skill_keycodes[0]);
+                SendKeys.SendWait(skill_keycodes[0]);
                 Thread.Sleep(2000);
             }
         }
