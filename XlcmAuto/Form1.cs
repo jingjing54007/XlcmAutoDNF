@@ -16,15 +16,15 @@ namespace XlcmAuto
         private ConfigReader config;
         private int skill_count;
 
-        private Keys[] skill_keycodes;
+        private String[] skill_keycodes;
         private int[] skill_cds;
         private long[] skill_lastusage;
         private int round_index;
         private int init_round_wait;
         private int mid_round_wait;
-        private Keys pickKey;
-        private Keys automoveKey;
-        private Keys againKey;
+        private String pickKey;
+        private String automoveKey;
+        private String againKey;
         private String windowTitle;
 
         private int stageCheckIdle = 3000;
@@ -38,7 +38,7 @@ namespace XlcmAuto
         public Form1()
         {
             InitializeComponent();
-            skill_keycodes = new Keys[6];
+            skill_keycodes = new String[6];
             skill_lastusage = new long[6];
             skill_cds = new int[6];
         }
@@ -53,15 +53,15 @@ namespace XlcmAuto
                 String keyCap = config.IniReadValue(ConfigReader.sectionSkill, config.getKeyForSkillKey(i));
                 if(keyCap != null)
                 {
-                    skill_keycodes[i - 1] = getKeyCode(keyCap);
+                    skill_keycodes[i - 1] = (keyCap);
                     String val = config.IniReadValue(ConfigReader.sectionSkill, config.getKeyForSkillCd(i), "10");
                     skill_cds[i - 1] = Int32.Parse(val);
                     skill_lastusage[i - 1] = 0;
                 }
             }
-            pickKey = getKeyCode(config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyPick, "X"));
-            automoveKey = getKeyCode(config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyAutomove, "0"));
-            againKey = getKeyCode(config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyAgain, "F10"));
+            pickKey = config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyPick, "X");
+            automoveKey = config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyAutomove, "0");
+            againKey = config.IniReadValue(ConfigReader.sectionHotKey, ConfigReader.keyAgain, "F10");
             windowTitle = config.IniReadValue(ConfigReader.sectionSystem, ConfigReader.keyWindowTitle, "DNF");
         }
 
@@ -90,7 +90,7 @@ namespace XlcmAuto
             }
             else if (gameStage == 2)
             {
-                SendKeys.Send("F10");
+                SendKeys.Send(againKey);
             }
         }
 
@@ -107,10 +107,10 @@ namespace XlcmAuto
 
         private void pickUp()
         {
-            SendKeys.SendWait("0");
+            SendKeys.SendWait(automoveKey);
             for (int i = 0; i < 15; i++)
             {
-                SendKeys.SendWait("X");
+                SendKeys.SendWait(pickKey);
             }
         }
 
@@ -123,7 +123,7 @@ namespace XlcmAuto
         {
             while (gameStage == 1)
             {
-                SendKeys.Send("G");
+                SendKeys.Send(skill_keycodes[0]);
                 Thread.Sleep(2000);
             }
         }
