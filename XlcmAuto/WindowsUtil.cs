@@ -21,10 +21,11 @@ namespace XlcmAuto
         [DllImport("user32.dll")]
         public static extern bool SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, int uFlags);
         [DllImport("user32.dll")]//取设备场景 
-        private static extern IntPtr GetDC(IntPtr hwnd);//返回设备场景句柄 
+        public static extern IntPtr GetDC(IntPtr hwnd);//返回设备场景句柄 
         [DllImport("gdi32.dll")]//取指定点颜色 
-        private static extern int GetPixel(IntPtr hdc, Point p);
-
+        public static extern int GetPixel(IntPtr hdc, Point p);
+        [DllImport("user32.dll")]
+        public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
         //   窗口置前   
         public static void SetWindowPos(IntPtr hWnd)
@@ -46,12 +47,18 @@ namespace XlcmAuto
 
         public static bool ColorEqual(Color c1, Color c2)
         {
-            return c1.R == c2.R && c1.G == c2.G && c1.B == c2.B;
+            bool r = Math.Abs(c1.R - c2.R) < 3;
+            bool g = Math.Abs(c1.G - c2.G) < 3;
+            bool b = Math.Abs(c1.B - c2.B) < 3;
+            return r && g && b;
         }
 
         public static bool ColorEqual(Color c, int r, int g, int b)
         {
-            return c.R == r && c.G == g && c.B == b;
+            bool rr = Math.Abs(c.R - r) < 3;
+            bool gg = Math.Abs(c.G - g) < 3;
+            bool bb = Math.Abs(c.B - b) < 3;
+            return rr && gg && bb;
         }
     }
 }
